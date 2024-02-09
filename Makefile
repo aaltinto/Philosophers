@@ -29,7 +29,6 @@ $(NAME): $(OBJ)
 	@echo "$(BUILD_PRINT)"
 
 clean :
-	if $(OBJ)
 		@rm -rf $(OBJ)
 		@echo "$(DELETE_OBJ)"
 

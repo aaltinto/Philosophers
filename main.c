@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 15:26:00 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:27:10 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:50:22 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	abort_mission(t_vars *vars, pthread_t **threads_id)
 {
 	int	i;
 
-	free(*threads_id);
+	if (!*threads_id)
+		free(*threads_id);
 	i = -1;
 	if (++i < vars->num)
 		pthread_mutex_destroy(&vars->eat);
@@ -26,7 +27,8 @@ void	abort_mission(t_vars *vars, pthread_t **threads_id)
 	i = -1;
 	while (++i < vars->count && i + 2 < vars->num)
 		pthread_mutex_destroy(&vars->philos[i].l_fork);
-	free(vars->philos);
+	if (vars->philos[0].index == -1)
+		free(vars->philos);
 }
 
 int	main(int argc, char **argv)

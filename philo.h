@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 11:18:59 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:28:00 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:53:33 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ typedef struct s_vars
 	int				max_eat;
 	int				num;
 	pthread_mutex_t	death;
-	pthread_mutex_t	sleep;
 	pthread_mutex_t	eat;
-	pthread_mutex_t	time;
 	size_t			start_time;
 	t_philo			*philos;
 }		t_vars;
@@ -54,6 +52,7 @@ void	print_time(char *msg, int i, t_vars *vars, size_t current);
 int		ft_usleep(size_t milliseconds);
 
 void	*death_note(void *arg);
+void	*die(t_vars *vars, int index, int print);
 int		is_dead(t_philo *philo);
 
 void	*eat_sleep_repeat(void *arg);

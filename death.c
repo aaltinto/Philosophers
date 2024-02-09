@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:22:21 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:23:46 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:08:04 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@ int	is_dead(t_philo *philo)
 	return (pthread_mutex_unlock(&philo->vars->death), 0);
 }
 
-static void	die(t_vars *vars, int index)
+void	*die(t_vars *vars, int index, int print)
 {
 	size_t	die_time;
 
 	if (pthread_mutex_lock(&vars->death) != 0)
-		err_msg("Error\nMutex can't be locked");
+		return (err_msg("Error\nMutex can't be locked"), NULL);
 	vars->is_dead = 1;
 	die_time = get_time();
 	pthread_mutex_unlock(&vars->death);
 	ft_usleep(10);
-	print_time("\033[0;31mdied", index, vars, die_time);
+	if (print)
+		print_time("\033[0;31mdied", index, vars, die_time);
+	return(NULL);
 }
 
 static int	check_all(t_vars *vars)
@@ -76,7 +78,7 @@ void	*death_note(void *arg)
 			time = get_time() - vars->philos[i].last_ate;
 			pthread_mutex_unlock(&vars->eat);
 			if (time > vars->time_to_die)
-				return (die(vars, i + 1), NULL);
+				return (die(vars, i + 1, 1));
 		}
 	}
 }

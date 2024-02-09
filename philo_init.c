@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:47:15 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:10:02 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:50:15 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static int	max_eat_fill(t_vars *vars, int argv)
 
 int	philo_mutex_init(t_vars *vars, int i)
 {
-	vars->num = 0;
 	vars->philos = malloc(sizeof(t_philo) * vars->count);
 	if (!vars->philos)
-		err_msg("malloc error");
+		return (err_msg("malloc error"), 0);
+	vars->philos[0].index = -1;
 	if ((pthread_mutex_init(&vars->eat, NULL) != 0 || !++vars->num)
 		|| (pthread_mutex_init(&vars->death, NULL) != 0 || !++vars->num))
 		return (err_msg("mutex init error"), 0);
@@ -51,6 +51,8 @@ int	philo_fill(int argc, char **argv, t_vars *vars)
 {
 	int	i;
 
+	vars->num = 0;
+	vars->count = 0;
 	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0 || ft_atoi(argv[3]) <= 0
 		|| ft_atoi(argv[4]) <= 0)
 		return (err_msg("Invalid argument"),

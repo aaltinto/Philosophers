@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:34:13 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:23:38 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:08:56 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ int	take_fork(t_philo *philo)
 	if (is_dead(philo))
 		return (pthread_mutex_unlock(&philo->l_fork), 1);
 	print_time("has taken a fork", philo->index, philo->vars, get_time());
-	if (pthread_mutex_lock(&philo->vars->death) != 0)
-		return (err_msg("Error\nMutex can't be locked"), 1);
 	if (is_dead(philo) && philo->vars->count == 1)
 		return (pthread_mutex_unlock(&philo->l_fork), 1);
-	pthread_mutex_unlock(&philo->vars->death);
 	if (pthread_mutex_lock(philo->r_fork) != 0)
 		return (err_msg("Error\nMutex can't be locked"), 1);
 	if (is_dead(philo))
@@ -73,11 +70,11 @@ void	*eat_sleep_repeat(void *arg)
 	while (1)
 	{
 		if (take_fork(philo))
-			return (NULL);
+			return (die(vars, 3, 0));
 		if (eat(philo))
-			return (NULL);
+			return (die(vars, 3, 0));
 		if (sleep_think(philo))
-			return (NULL);
+			return (die(vars, 3, 0));
 	}
 	return (NULL);
 }
