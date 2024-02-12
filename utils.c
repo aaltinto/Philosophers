@@ -70,7 +70,7 @@ int	ft_usleep(size_t milliseconds, t_philo *philo)
 	{
 		usleep(100);
 		if (philo->vars->is_dead == 1)
-			return(1);
+			return (1);
 	}
 	return (0);
 }
