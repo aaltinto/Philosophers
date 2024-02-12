@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:57:56 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/08 16:26:34 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:06:34 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 int	ft_atoi(char *num)
 {
-	int	ret;
-	int	i;
+	long	ret;
+	size_t	i;
 
 	ret = 0;
 	i = -1;
@@ -28,6 +28,8 @@ int	ft_atoi(char *num)
 			return (0);
 		ret = (ret * 10) + (num[i] - 48);
 	}
+	if (ret < -2147483648 || ret > 2147483647)
+		return (-1);
 	return (ret);
 }
 
@@ -59,12 +61,16 @@ void	print_time(char *msg, int i, t_vars *vars, size_t current)
 	printf("%ld %d %s\033[0;37m\n", p_time, i, msg);
 }
 
-int	ft_usleep(size_t milliseconds)
+int	ft_usleep(size_t milliseconds, t_philo *philo)
 {
 	size_t	start;
 
 	start = get_time();
 	while ((get_time() - start) < milliseconds)
+	{
 		usleep(100);
+		if (philo->vars->is_dead == 1)
+			return(1);
+	}
 	return (0);
 }

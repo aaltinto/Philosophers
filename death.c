@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:22:21 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/09 18:08:04 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:32:04 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ void	*die(t_vars *vars, int index, int print)
 {
 	size_t	die_time;
 
+	if (is_dead(&vars->philos[0]))
+		return (NULL);
 	if (pthread_mutex_lock(&vars->death) != 0)
 		return (err_msg("Error\nMutex can't be locked"), NULL);
 	vars->is_dead = 1;
 	die_time = get_time();
 	pthread_mutex_unlock(&vars->death);
-	ft_usleep(10);
+	ft_usleep(10, &vars->philos[0]);
 	if (print)
 		print_time("\033[0;31mdied", index, vars, die_time);
-	return(NULL);
+	return (NULL);
 }
 
 static int	check_all(t_vars *vars)
@@ -71,6 +73,8 @@ void	*death_note(void *arg)
 				return (pthread_mutex_unlock(&vars->death), NULL);
 		pthread_mutex_unlock(&vars->death);
 		i = -1;
+		if (is_dead(&vars->philos[0]))
+			return (NULL);
 		while (++i < vars->count)
 		{
 			if (pthread_mutex_lock(&vars->eat) != 0)

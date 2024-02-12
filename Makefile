@@ -1,6 +1,6 @@
 NAME := philo
 
-FLAGS := -Wall -Wextra -Werror #-pthread -fsanitize=thread -g
+FLAGS := -Wall -Wextra -Werror -pthread -fsanitize=thread -g
 
 CC := gcc
 GREEN := \033[0;32m

@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 15:26:00 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/09 17:50:22 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:34:27 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	abort_mission(t_vars *vars, pthread_t **threads_id)
 {
 	int	i;
 
-	if (!*threads_id)
+	if (*threads_id)
 		free(*threads_id);
 	i = -1;
 	if (++i < vars->num)
@@ -27,7 +27,7 @@ void	abort_mission(t_vars *vars, pthread_t **threads_id)
 	i = -1;
 	while (++i < vars->count && i + 2 < vars->num)
 		pthread_mutex_destroy(&vars->philos[i].l_fork);
-	if (vars->philos[0].index == -1)
+	if (vars->philos[0].index != -1)
 		free(vars->philos);
 }
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv)
 		return (err_msg(ARG_MSG), 1);
 	threads_id = NULL;
 	if (!philo_fill(argc, argv, &vars))
-		return (abort_mission(&vars, &threads_id), 1);
+		return (1);
 	threads_id = malloc(sizeof(pthread_t) * (vars.count));
 	if (!threads_id)
 		return (err_msg("Error\nMalloc error"),

@@ -6,7 +6,7 @@
 /*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 11:18:59 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/09 17:53:33 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:06:43 by aaltinto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int		ft_atoi(char *num);
 void	err_msg(char *msg);
 size_t	get_time(void);
 void	print_time(char *msg, int i, t_vars *vars, size_t current);
-int		ft_usleep(size_t milliseconds);
+int		ft_usleep(size_t milliseconds, t_philo *philo);
+
+void	abort_mission(t_vars *vars, pthread_t **threads_id);
 
 void	*death_note(void *arg);
 void	*die(t_vars *vars, int index, int print);
