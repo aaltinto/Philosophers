@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bakgun <bakgun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:22:21 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/12 13:32:04 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:16:01 by bakgun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	check_all(t_vars *vars)
 void	*death_note(void *arg)
 {
 	t_vars	*vars;
-	int		i;
 	int		time;
 
 	vars = (t_vars *)arg;
@@ -72,17 +71,17 @@ void	*death_note(void *arg)
 			if (check_all(vars))
 				return (pthread_mutex_unlock(&vars->death), NULL);
 		pthread_mutex_unlock(&vars->death);
-		i = -1;
+		vars->death_i = -1;
 		if (is_dead(&vars->philos[0]))
 			return (NULL);
-		while (++i < vars->count)
+		while (++vars->death_i < vars->count)
 		{
 			if (pthread_mutex_lock(&vars->eat) != 0)
 				return (err_msg("Error\nMutex can't be locked"), NULL);
-			time = get_time() - vars->philos[i].last_ate;
+			time = get_time() - vars->philos[vars->death_i].last_ate;
 			pthread_mutex_unlock(&vars->eat);
 			if (time > vars->time_to_die)
-				return (die(vars, i + 1, 1));
+				return (die(vars, vars->death_i + 1, 1));
 		}
 	}
 }

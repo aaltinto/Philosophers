@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bakgun <bakgun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:47:15 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/12 13:36:34 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:01:05 by bakgun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,16 @@ static int	max_eat_fill(t_vars *vars, int argv)
 
 int	philo_mutex_init(t_vars *vars, int i)
 {
-	vars->num = 0;
 	vars->philos = malloc(sizeof(t_philo) * vars->count);
 	if (!vars->philos)
 		return (err_msg("malloc error"), 0);
-	vars->philos[0].index = -1;
 	if ((pthread_mutex_init(&vars->eat, NULL) != 0 || !++vars->num)
 		|| (pthread_mutex_init(&vars->death, NULL) != 0 || !++vars->num))
-		return (err_msg("mutex init error"), abort_mission(vars, NULL), 0);
+		return (err_msg("mutex init error"), 0);
 	while (++i < vars->count)
 	{
 		if (pthread_mutex_init(&vars->philos[i].l_fork, NULL) != 0)
-			return (err_msg("mutex init error"), abort_mission(vars, NULL), 0);
+			return (err_msg("mutex init error"), 0);
 		vars->num++;
 		if (i == vars->count -1)
 			vars->philos[i].r_fork = &vars->philos[0].l_fork;
@@ -52,10 +50,11 @@ int	philo_fill(int argc, char **argv, t_vars *vars)
 {
 	int	i;
 
+	vars->philos = NULL;
+	vars->num = 0;
 	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0 || ft_atoi(argv[3]) <= 0
 		|| ft_atoi(argv[4]) <= 0)
-		return (err_msg("Invalid argument"),
-			err_msg("Arguments must be unsigned int"), 0);
+		return (err_msg(ERR_MSG_POSITIVE), 0);
 	i = -1;
 	while (++i < ft_atoi(argv[1]))
 	{
@@ -68,11 +67,10 @@ int	philo_fill(int argc, char **argv, t_vars *vars)
 		if (argc == 6)
 		{
 			if (max_eat_fill(vars, ft_atoi(argv[5])) != 1)
-				return (err_msg("Invalid argument"),
-					err_msg("Arguments must be positive"), 0);
+				return (err_msg(ERR_MSG_POSITIVE), 0);
 		}
 		else
 			vars->max_eat = -1;
 	}
-	return (philo_mutex_init(vars, -1));
+	return (1);
 }

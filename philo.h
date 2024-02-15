@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaltinto <aaltinto@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bakgun <bakgun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 11:18:59 by aaltinto          #+#    #+#             */
-/*   Updated: 2024/02/12 12:06:43 by aaltinto         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:21:46 by bakgun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define ARG_MSG "Args must be like:\n\x1b[33m<number_of_philosophers> \
 <time_to_die> <time_to_eat> <time_to_sleep> \
 [number_of_times_each_philosopher_must_eat]"
+# define ERR_MSG_POSITIVE "Invalid argument\nArgs must be positive int"
 
 # include <pthread.h>
 
@@ -36,9 +37,9 @@ typedef struct s_vars
 	int				time_to_sleep;
 	int				time_to_eat;
 	int				time_to_die;
-	int				ready;
 	int				max_eat;
 	int				num;
+	int				death_i;
 	pthread_mutex_t	death;
 	pthread_mutex_t	eat;
 	size_t			start_time;
